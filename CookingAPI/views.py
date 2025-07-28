@@ -17,12 +17,18 @@ def nationalities(request):
         new_nationality = Nationality(name=(data.get("name")))
         Nationality.save(new_nationality)
         data = Nationality.objects.filter(pk=new_nationality.pk)
-    elif request.method == "GET":
-        data = Nationality.objects.all()
     else:
         data = Nationality.objects.all()
     serializer = NationalitySerializer(data, many=True)
     return JsonResponse({'nationalities': serializer.data})
+def single_nationality(request, nation_id):
+    nationality = Nationality.objects.get(pk=nation_id)
+    serializer = NationalitySerializer(instance=nationality)
+    if request.method == "DELETE":
+        nationality.delete()
+
+    return JsonResponse({'nationality': serializer.data})
+
 def categories(request):
     data = RecipeType.objects.all()
     serializer = TypeSerializer(data, many=True)

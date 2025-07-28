@@ -24,5 +24,6 @@ urlpatterns = [
     # path('login/', include('django.contrib.auth.urls')),
     path('api/recipes/', views.recipes, name='recipes'),
     path('api/nationalities/', views.nationalities, name='nationalities'),
+    path('api/nationalities/<int:nation_id>/', views.single_nationality, name='single_nationality'),
     path('api/categories/', views.categories, name='categories')
 ]
