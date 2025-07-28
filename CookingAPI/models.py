@@ -25,11 +25,6 @@ class Recipe(models.Model):
     date_created = models.DateTimeField()
     image_links = models.JSONField()
 
-    '''
-    @Convert(converter = StringListConverter.class)
-    @Column(name="type", columnDefinition = "TEXT")
-    private List<String> type;
-    '''
 
 class RecipeSection(models.Model):
     recipe_id = models.ForeignKey(Recipe, on_delete=models.CASCADE)

@@ -30,9 +30,22 @@ def single_nationality(request, nation_id):
     return JsonResponse({'nationality': serializer.data})
 
 def categories(request):
-    data = RecipeType.objects.all()
+    if request.method == "POST":
+        data = request.POST
+        new_type = RecipeType(name=(data.get("name")))
+        RecipeType.save(new_type)
+        data = RecipeType.objects.filter(pk=new_type.pk)
+    else:
+        data = RecipeType.objects.all()
     serializer = TypeSerializer(data, many=True)
     return JsonResponse({'categories': serializer.data})
+def single_category(request, type_id):
+    category = RecipeType.objects.get(pk=type_id)
+    serializer = TypeSerializer(instance=category)
+    if request.method == "DELETE":
+        category.delete()
+
+    return JsonResponse({'category': serializer.data})
 
 def tempQueries():
     r1 = Recipe.objects.all() #get all recipes
