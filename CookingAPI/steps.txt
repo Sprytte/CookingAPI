@@ -1,0 +1,13 @@
+python manage.py migrate (initial setup? idfk)
+python manage.py makemigrations CookingAPI
+
+python manage.py showmigrations
+This shows all the existing migrations, and it should show that they have been applied with an [X].
+
+Then,
+python manage.py makemigrations
+Makes a new migration file for your new model (name 00004_...).
+
+Then do
+python manage.py migrate
+to apply it.
