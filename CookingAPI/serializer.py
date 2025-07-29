@@ -19,3 +19,7 @@ class NationalitySerializer(serializers.ModelSerializer):
     class Meta:
         model = Nationality
         fields = '__all__'
+class TestSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Test
+        fields = '__all__'

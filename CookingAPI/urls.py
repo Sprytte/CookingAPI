@@ -26,5 +26,6 @@ urlpatterns = [
     path('api/nationalities/', views.nationalities, name='nationalities'),
     path('api/nationalities/<int:nation_id>/', views.single_nationality, name='nationality'),
     path('api/categories/', views.categories, name='categories'),
-    path('api/categories/<int:type_id>/', views.single_category, name='category')
+    path('api/categories/<int:type_id>/', views.single_category, name='category'),
+    path('test', views.test, name='test')
 ]

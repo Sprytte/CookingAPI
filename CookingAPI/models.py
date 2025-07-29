@@ -34,3 +34,9 @@ class RecipeSection(models.Model):
     section_order = models.IntegerField()
 
     # private List < String > steps;
+
+class Test(models.Model):
+    duration = models.DurationField()
+    list = models.JSONField()
+    time_test = models.TimeField()
+    int_list = models.CharField(validators=[int_list_validator()])
