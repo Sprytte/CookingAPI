@@ -1,3 +1,6 @@
+import datetime
+import uuid
+
 from django.core.validators import RegexValidator, int_list_validator
 from django.db import models
 
@@ -9,20 +12,20 @@ class RecipeType(models.Model):
 
 class Recipe(models.Model):
     #debatably useful/important
-    recipe_id = models.UUIDField()
+    recipe_id = models.UUIDField(default=uuid.uuid4())
 
     recipe_name = models.CharField(max_length=50)
     ingredients = models.JSONField()  #tuple nb/text? For converting when adjusting portion
     type = models.CharField(validators=[int_list_validator()]) #not sure if multiple selection.
     # Validation when type deleted?
-    nationality = models.ForeignKey(Nationality, on_delete=models.SET_DEFAULT, default=0) #Can create new choice with method Fruit.objects.create(name="Apple").
+    nationality = models.ForeignKey(Nationality, on_delete=models.DO_NOTHING) #Can create new choice with method Fruit.objects.create(name="Apple").
     # on_delete=models.DO_NOTHING
     source = models.CharField(max_length=50)
     # sections = models.CharField(validators=[int_list_validator()]) #maybe
     portion = models.IntegerField()
     creator = models.CharField(max_length=50)
-    cook_time = models.CharField(max_length=50) #tuple nb/text? purely minutes? Auto adjust from section times
-    date_created = models.DateTimeField()
+    cook_time = models.TimeField() #tuple nb/text? purely minutes? Auto adjust from section times
+    date_created = models.DateTimeField(default=datetime.datetime.now())
     image_links = models.JSONField()
 
 
