@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime, time
 import uuid
 
 from django.core.validators import RegexValidator, int_list_validator
@@ -24,8 +24,8 @@ class Recipe(models.Model):
     # sections = models.CharField(validators=[int_list_validator()]) #maybe
     portion = models.IntegerField()
     creator = models.CharField(max_length=50)
-    cook_time = models.TimeField() #tuple nb/text? purely minutes? Auto adjust from section times
-    date_created = models.DateTimeField(default=datetime.datetime.now())
+    cook_time = models.TimeField(default=time.min) #tuple nb/text? purely minutes? Auto adjust from section times
+    date_created = models.DateTimeField(default=datetime.now())
     image_links = models.JSONField()
 
 
