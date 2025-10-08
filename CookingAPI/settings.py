@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'rest_framework',
+    'corsheaders',
     'CookingAPI',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -44,11 +45,28 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOWED_ORIGINS = [
+    # 'https://localhost:3000',
+    # 'https://127.0.0.1:8000',
+    'http://localhost:3000',
+    'http://127.0.0.1:8000'
+    # 'localhost:3000'
+]
+# CORS_ORIGIN_WHITELIST = (
+#     'http://localhost:8000',
+#     'http://localhost:3000',
+# )
+CORS_ALLOW_HEADERS = [
+    'http://localhost:3000',
 ]
 
 ROOT_URLCONF = 'CookingAPI.urls'
@@ -70,7 +88,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'CookingAPI.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases

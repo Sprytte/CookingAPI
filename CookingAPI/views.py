@@ -8,6 +8,7 @@ from datetime import datetime, timedelta, time
 from django.contrib.auth import authenticate, login
 from rest_framework.decorators import api_view
 
+#Return DTO, return nationality/type objects.
 @api_view(['GET', 'POST'])
 def recipes(request: Request):
     params = request.META["QUERY_STRING"].split(",")
@@ -31,23 +32,33 @@ def single_recipe(request: Request, id):
         print(request.data)
         serializer = RecipeSerializer(recipe, data=request.data)
         if serializer.is_valid(raise_exception=True):
-            # serializer.data['cook_time'] = time.min
             serializer.save()
     elif request.method == "DELETE":
         recipe.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
     return JsonResponse({'recipe': serializer.data})
 
-# def sections(request, recipe_id):
-#     if request.method == "POST":
-#         data = request.POST
-#         new_section = RecipeSection(name=(data.get("name"))) #modify recipe cook time
-#         RecipeSection.save(new_section)
-#         data = RecipeSection.objects.filter(pk=new_section.pk)
-#     else:
-#         data = RecipeSection.objects.all()
-#     serializer = SectionSerializer(data, many=True)
-#     return JsonResponse({'sections': serializer.data})
+@api_view(['GET'])
+def recipe_sections(request, recipe_id):
+    data = RecipeSection.objects.filter(recipe_id=recipe_id)
+    serializer = SectionSerializer(data, many=True)
+    return JsonResponse({'sections': serializer.data})
+@api_view(['POST'])
+def sections(request):
+    if request.method == "POST":
+        # data = request.POST
+        # new_section = RecipeSection(name=(data.get("name"))) #modify recipe cook time
+        serializer = SectionSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return JsonResponse({'section': serializer.data})
+        else:
+            return Response(status=status.HTTP_400_BAD_REQUEST, data=serializer.errors)
+    else:
+        data = RecipeSection.objects.all()
+        serializer = SectionSerializer(data, many=True)
+        return JsonResponse({'sections': serializer.data})
 
 @api_view(["POST", "GET"])
 def nationalities(request: Request):

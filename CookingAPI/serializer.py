@@ -1,14 +1,15 @@
 from rest_framework import serializers
 from CookingAPI.models import *
 
-class RecipeSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Recipe
-        fields = '__all__'
-
 class SectionSerializer(serializers.ModelSerializer):
     class Meta:
         model = RecipeSection
+        fields = '__all__'
+
+class RecipeSerializer(serializers.ModelSerializer):
+    sections = SectionSerializer(many=True, read_only=True)
+    class Meta:
+        model = Recipe
         fields = '__all__'
 
 class TypeSerializer(serializers.ModelSerializer):

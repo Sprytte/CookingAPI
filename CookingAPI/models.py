@@ -30,10 +30,11 @@ class Recipe(models.Model):
 
 
 class RecipeSection(models.Model):
-    recipe_id = models.ForeignKey(Recipe, on_delete=models.CASCADE)
+    recipe_id = models.ForeignKey(Recipe, related_name='sections',  on_delete=models.CASCADE)
     section_name = models.CharField(max_length=50)
     steps = models.JSONField()
     section_time = models.TimeField() #could make int? only min then formatted later?
     section_order = models.IntegerField()
 
-    # private List < String > steps;
+    def __str__(self):
+        return '%d: %s' % (self.section_order, self.title)
