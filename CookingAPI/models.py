@@ -4,11 +4,14 @@ import uuid
 from django.core.validators import RegexValidator, int_list_validator
 from django.db import models
 
-# TODO sqlite requires json extension
 class Nationality(models.Model):
     name = models.CharField('50')
+    def __str__(self):
+        return '%d: %s' % (self.id, self.name)
 class RecipeType(models.Model):
     name = models.CharField('25')
+    def __str__(self):
+        return '%d: %s' % (self.id, self.name)
 
 class Recipe(models.Model):
     #debatably useful/important

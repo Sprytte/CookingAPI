@@ -7,6 +7,7 @@ from django.http import JsonResponse, HttpResponse, HttpRequest
 from datetime import datetime, timedelta, time
 from django.contrib.auth import authenticate, login
 from rest_framework.decorators import api_view
+import random
 
 #Return DTO, return nationality/type objects.
 @api_view(['GET', 'POST'])
@@ -40,6 +41,11 @@ def single_recipe(request: Request, id):
     return JsonResponse({'recipe': serializer.data})
 
 @api_view(['GET'])
+def get_random(request):
+    ran_id = random.randrange(1,Recipe.objects.count().real)
+    return Response(data=ran_id, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
 def recipe_sections(request, recipe_id):
     data = RecipeSection.objects.filter(recipe_id=recipe_id)
     serializer = SectionSerializer(data, many=True)
@@ -52,6 +58,9 @@ def sections(request):
         serializer = SectionSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
             serializer.save()
+            recipe = Recipe.objects.get(pk=serializer.data.get("recipe_id"))
+            recipe.cook_time = add_time(recipe.cook_time, datetime.strptime(serializer.data.get("section_time"), "%H:%M:%S").time())
+            recipe.save()
             return JsonResponse({'section': serializer.data})
         else:
             return Response(status=status.HTTP_400_BAD_REQUEST, data=serializer.errors)
@@ -89,7 +98,7 @@ def categories(request):
         serializer = TypeSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
             serializer.save()
-            return JsonResponse({'nationality': serializer.data})
+            return JsonResponse({'category': serializer.data})
         else:
             return Response(status=status.HTTP_400_BAD_REQUEST, data=serializer.errors)
     else:
@@ -131,6 +140,10 @@ def single_category(request, type_id):
 #
 #     return new_recipe
 
+def add_time(r_time, s_time):
+    temp_date = datetime.combine(datetime.now().date(), r_time)
+    r_date = temp_date + timedelta(hours=s_time.hour, minutes=s_time.minute, seconds=s_time.second)
+    return r_date.time()
 def tempQueries():
     r1 = Recipe.objects.all() #get all recipes
     r2 = Recipe.objects.get(pk=1) #get recipe by (auto) id
