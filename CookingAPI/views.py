@@ -42,7 +42,8 @@ def single_recipe(request: Request, id):
 
 @api_view(['GET'])
 def get_random(request):
-    ran_id = random.randrange(1,Recipe.objects.count().real)
+    rando = random.randrange(0, Recipe.objects.count())
+    ran_id = Recipe.objects.all()[rando].id
     return Response(data=ran_id, status=status.HTTP_200_OK)
 
 @api_view(['GET'])
